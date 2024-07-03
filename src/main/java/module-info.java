@@ -7,6 +7,7 @@ module com.tuandev.excelhandle {
     requires org.apache.poi.ooxml;
     requires java.desktop;
 
+    exports com.tuandev.excelhandle;
     exports com.tuandev.excelhandle.views;
     exports com.tuandev.excelhandle.models;
 

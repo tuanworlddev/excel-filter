@@ -2,7 +2,6 @@ package com.tuandev.excelhandle.controllers;
 
 import com.tuandev.excelhandle.models.Object1;
 import com.tuandev.excelhandle.models.Object2;
-import com.tuandev.excelhandle.views.HomeApplication;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -106,8 +105,10 @@ public class HomeController implements Initializable {
                 try {
                     object1List = Convert.convertObject1(excel1);
                     object2List = Convert.convertObject2(excel2);
-                    Handler.export1Handle(excelFile, object1List, object2List);
-                    showOpenExcelDialog(excelFile);
+                    boolean success = Handler.export1Handle(excelFile, object1List, object2List);
+                    if (success) {
+                        showOpenExcelDialog(excelFile);
+                    }
                 } catch (IOException e) {
                     showErrorDialog(e.getMessage());
                 }
@@ -125,10 +126,11 @@ public class HomeController implements Initializable {
             if (excelFile != null) {
                 lastDirectory = excelFile.getParentFile();
                 try {
-                    object1List = Convert.convertObject1(excel1);
                     object2List = Convert.convertObject2(excel2);
-                    Handler.export2Handle(excelFile, object2List);
-                    showOpenExcelDialog(excelFile);
+                    boolean success = Handler.export2Handle(excelFile, object2List);
+                    if (success) {
+                        showOpenExcelDialog(excelFile);
+                    }
                 } catch (IOException e) {
                     showErrorDialog(e.getMessage());
                 }
@@ -149,7 +151,7 @@ public class HomeController implements Initializable {
                 try {
                     Desktop.getDesktop().open(excelFile);
                 } catch (IOException var5) {
-                    this.showErrorDialog(var5.getMessage());
+                    showErrorDialog(var5.getMessage());
                 }
             }
 
@@ -192,8 +194,7 @@ public class HomeController implements Initializable {
                         try {
                             AuthController.getInstance().writeKey(key);
                         } catch (IOException var7) {
-                            IOException e = var7;
-                            this.showErrorDialog(e.getMessage());
+                            this.showErrorDialog(var7.getMessage());
                         }
                     }
 

@@ -13,8 +13,6 @@ import java.util.Base64;
 public class AuthController {
     private static AuthController instance;
     public boolean isLoggedIn = false;
-    public final String ACCESS_KEY = "HongRancho";
-    private final String AUTH_FILE_PATH = "data/auth.txt";
 
     public AuthController() {
     }
