@@ -7,13 +7,14 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 public class Convert {
-    public static List<Object1> convertObject1(File file) {
+    public static List<Object1> convertObject1(File file) throws IOException {
         List<Object1> list = new ArrayList<>();
         if (file.exists()) {
             try (FileInputStream fis = new FileInputStream(file);
@@ -44,14 +45,12 @@ public class Convert {
                     Object1 object1 = new Object1(orderNumber, chrtId, sellerArticle, wBarcodeArticle, productName, packagingDimension, weight, size, color, brand, productCode, sticker, stickerRead);
                     list.add(object1);
                 }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
         }
         return list;
     }
 
-    public static List<Object2> convertObject2(File file) {
+    public static List<Object2> convertObject2(File file) throws IOException {
         List<Object2> list = new ArrayList<>();
         if (file.exists()) {
             try (FileInputStream fis = new FileInputStream(file);
@@ -77,8 +76,6 @@ public class Convert {
                     Object2 object2 = new Object2(jobNo, brand, name, size, color, sellerCode, sticker, barcode);
                     list.add(object2);
                 }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
         }
         return list;

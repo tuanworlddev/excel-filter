@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Handler {
-    public static boolean export1Handle(File excelFile, List<Object1> object1List, List<Object2> object2List) throws IOException {
+    public static void export1Handle(File excelFile, List<Object1> object1List, List<Object2> object2List) throws IOException {
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet();
             Row headerRow = sheet.createRow(0);
@@ -68,12 +68,11 @@ public class Handler {
 
             try (FileOutputStream fileOut = new FileOutputStream(excelFile)) {
                 workbook.write(fileOut);
-                return true;
             }
         }
     }
 
-    public static boolean export2Handle(File excelFile, List<Object2> object2List) throws IOException {
+    public static void export2Handle(File excelFile, List<Object2> object2List) throws IOException {
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet();
             Row headerRow = sheet.createRow(0);
@@ -102,7 +101,6 @@ public class Handler {
 
             try (FileOutputStream fileOut = new FileOutputStream(excelFile)) {
                 workbook.write(fileOut);
-                return true;
             }
 
         }

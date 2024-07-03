@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -26,8 +25,6 @@ import java.util.ResourceBundle;
 public class HomeController implements Initializable {
     private File excel1;
     private File excel2;
-    private List<Object1> object1List;
-    private List<Object2> object2List;
     private FileChooser excelFileChooser;
     private File lastDirectory;
 
@@ -36,15 +33,6 @@ public class HomeController implements Initializable {
 
     @FXML
     private TextField input2TF;
-
-    @FXML
-    private Button handlerBtn;
-
-    @FXML
-    private Button export1Btn;
-
-    @FXML
-    private Button export2Btn;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -99,20 +87,20 @@ public class HomeController implements Initializable {
             excelFileChooser.setInitialDirectory(lastDirectory);
         }
         if (excel1 != null && excel2 != null) {
-            File excelFile = this.excelFileChooser.showSaveDialog(null);
-            if (excelFile != null) {
-                lastDirectory = excelFile.getParentFile();
                 try {
-                    object1List = Convert.convertObject1(excel1);
-                    object2List = Convert.convertObject2(excel2);
-                    boolean success = Handler.export1Handle(excelFile, object1List, object2List);
-                    if (success) {
+                    List<Object1> object1List = Convert.convertObject1(excel1);
+                    List<Object2> object2List = Convert.convertObject2(excel2);
+                    File excelFile = this.excelFileChooser.showSaveDialog(null);
+                    if (excelFile != null) {
+                        lastDirectory = excelFile.getParentFile();
+                        Handler.export1Handle(excelFile, object1List, object2List);
                         showOpenExcelDialog(excelFile);
                     }
                 } catch (IOException e) {
                     showErrorDialog(e.getMessage());
                 }
-            }
+        } else {
+            showErrorDialog("Please complete all information");
         }
     }
 
@@ -122,26 +110,26 @@ public class HomeController implements Initializable {
             excelFileChooser.setInitialDirectory(lastDirectory);
         }
         if (excel2 != null) {
-            File excelFile = this.excelFileChooser.showSaveDialog(null);
-            if (excelFile != null) {
-                lastDirectory = excelFile.getParentFile();
-                try {
-                    object2List = Convert.convertObject2(excel2);
-                    boolean success = Handler.export2Handle(excelFile, object2List);
-                    if (success) {
-                        showOpenExcelDialog(excelFile);
-                    }
-                } catch (IOException e) {
-                    showErrorDialog(e.getMessage());
+            try {
+                List<Object2> object2List = Convert.convertObject2(excel2);
+                File excelFile = this.excelFileChooser.showSaveDialog(null);
+                if (excelFile != null) {
+                    lastDirectory = excelFile.getParentFile();
+                    Handler.export2Handle(excelFile, object2List);
+                    showOpenExcelDialog(excelFile);
                 }
+            } catch (IOException e) {
+                showErrorDialog(e.getMessage());
             }
+        } else {
+            showErrorDialog("Please complete all information");
         }
     }
 
     private void showOpenExcelDialog(File excelFile) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Open Excel File");
-        alert.setHeaderText((String)null);
+        alert.setHeaderText(null);
         alert.setContentText("Excel file has been saved. Do you want to open it now?");
         ButtonType buttonTypeYes = new ButtonType("Yes");
         ButtonType buttonTypeNo = new ButtonType("No");
@@ -200,7 +188,7 @@ public class HomeController implements Initializable {
 
                     Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                     successAlert.setTitle("Success");
-                    successAlert.setHeaderText((String)null);
+                    successAlert.setHeaderText(null);
                     successAlert.setContentText("You have successfully logged in!");
                     successAlert.showAndWait();
                 } else {
